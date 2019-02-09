@@ -7,8 +7,9 @@ function getAll($tableName)
     $db->connect();
     $db->prepare('SELECT * FROM ' . $tableName);
     $db->execute();
+    $regs = $db->$result;
     $db->close();
-    return $db->$result;
+    return $regs;
 }
 
 function getById($tableName, $id)
@@ -26,13 +27,24 @@ function getById($tableName, $id)
 
 class TestRepository
 {
-    function getAll() { getAll('tests'); }
+    function getAll() { return getAll('tests'); }
 
     function getById($id)
     {
         $regs = getById('tests', $id);
 
-        if($regs) return $regs;
+        if($regs)
+        {
+            $dbQuestions = new Database();
+            $dbQuestions->connect();
+            $dbQuestions->prepare('SELECT * FROM questios WHERE testId = :testId');
+            $dbQuestions->bindParam(':testId', $id);
+            $dbQuestions->execute();
+            $regs['questions'] = $dbQuestions->$result;
+            $dbQuestions->close();
+
+            return $regs;
+        }
         else
         {
             $reg['id'] = 0;
@@ -70,7 +82,7 @@ class TestRepository
 
 class QuestionRepository
 {
-    function getAll() { getAll('questios'); }
+    function getAll() { return getAll('questios'); }
 
     function getById($id)
     {
@@ -119,6 +131,19 @@ class QuestionRepository
         $db->bindParam(':answer_04', $answer_04);
         $db->execute();
         $db->close();
+    }
+
+    function remove($id)
+    {
+        if($id)
+        {
+            $db = new Database();
+            $db->connect();
+            $db->prepare("DELETE FROM questios WHERE id = :id");
+            $db->bindParam(':id', $id);
+            $db->execute();
+            $db->close();
+        }
     }
 }
 ?>

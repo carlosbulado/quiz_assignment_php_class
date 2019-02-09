@@ -4,17 +4,11 @@ require('../../domain/domain.php');
 
 $id = filter_input(INPUT_GET, 'id');
 $test = new Test();
+$testRep = new TestRepository();
 
 if (!$_POST)
 {
-    $testRep = new TestRepository();
     $test = $testRep->getById($id);
-
-    $dbQuestions = new Database();
-    $dbQuestions->connect();
-    $dbQuestions->prepare('SELECT * FROM questios WHERE testId = :testId');
-    $dbQuestions->bindParam(':testId', $id);
-    $dbQuestions->execute();
 }
 else
 {
@@ -37,7 +31,9 @@ else
             header('Location: ../search-test/search-test.php');
             break;
             default:
-            $testRep->remove($action);
+            $quetionRep = new QuestionRepository();
+            $quetionRep->remove($action);
+            $test = $testRep->getById($id);
             break;
         }
     }
@@ -73,7 +69,7 @@ else
                 <th></th>
             </tr>
             <tbody id="search-test-table">
-                <?php if($dbQuestions && $dbQuestions->$result) { foreach($dbQuestions->$result as $question) { ?>
+                <?php if($test['questions'] && $test['questions']) { foreach($test['questions'] as $question) { ?>
                     <tr>
                         <td><?php echo $question['name']; ?></td>
                         <td><?php echo $question['answer_01']; ?></td>
@@ -92,5 +88,8 @@ else
         <button type="reset">Reset</button>
     </form>
 </main>
-<?php if($dbQuestions) { $dbQuestions->close(); } ?>
+
+<script>
+    var question = <?php echo json_encode($test); ?>;
+</script>
 <?php include('../shared/footer.php'); ?>

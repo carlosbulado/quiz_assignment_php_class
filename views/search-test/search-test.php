@@ -2,10 +2,8 @@
 require('../../domain/domain.php');
 require('../../repository/repositories.php');
 
-$db = new Database();
-$db->connect();
-$db->prepare('SELECT * FROM tests');
-$db->execute();
+$testRep = new TestRepository();
+$tests = $testRep->getAll();
 
 ?>
 <?php include('../shared/header.php'); ?>
@@ -22,15 +20,19 @@ $db->execute();
             <th></th>
         </tr>
         <tbody id="search-test-table">
-            <?php foreach($db->$result as $test) { ?>
+            <?php foreach($tests as $test) { ?>
                 <tr>
                     <td><?php echo $test['name']; ?></td>
                     <td><?php echo '<a href="../add-test/add-test.php?id=' . $test['id'] . '">Edit</a>'; ?></td>
-                    <td><?php echo '<form method="post"><button type="submit" name="id" value="' . $test['id'] . '"><a>Remove</a></button></form>'; ?></td>
+                    <td><?php echo '<button type="submit" name="id" value="' . $test['id'] . '"><a>Remove</a></button>'; ?></td>
                 </tr>
             <?php } ?>
         </tbody>
     </table>
 </main>
-<?php $db->close(); ?>
+
+<script>
+    var question = <?php echo json_encode($tests); ?>;
+</script>
+
 <?php include('../shared/footer.php'); ?>
