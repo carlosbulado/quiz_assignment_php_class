@@ -25,6 +25,19 @@ function getById($tableName, $id)
     return $reg;
 }
 
+function removeById($tableName, $id)
+{
+    if($id)
+    {
+        $db = new Database();
+        $db->connect();
+        $db->prepare('DELETE FROM ' . $tableName . ' WHERE id = :id');
+        $db->bindParam(':id', $id);
+        $db->execute();
+        $db->close();
+    }
+}
+
 class TestRepository
 {
     function getAll() { return getAll('tests'); }
@@ -78,6 +91,8 @@ class TestRepository
         $db->execute();
         $db->close();
     }
+
+    function remove($id) { removeById('tests', $id); }
 }
 
 class QuestionRepository
@@ -133,17 +148,6 @@ class QuestionRepository
         $db->close();
     }
 
-    function remove($id)
-    {
-        if($id)
-        {
-            $db = new Database();
-            $db->connect();
-            $db->prepare("DELETE FROM questios WHERE id = :id");
-            $db->bindParam(':id', $id);
-            $db->execute();
-            $db->close();
-        }
-    }
+    function remove($id) { removeById('questios', $id); }
 }
 ?>
