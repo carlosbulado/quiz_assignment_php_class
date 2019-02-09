@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `questions_done` (
   `answer_01` varchar(2000) NOT NULL,
   `answer_02` varchar(2000) NOT NULL,
   `answer_03` varchar(2000) NOT NULL,
-  `answer_04` varchar(2000) NOT NULL
+  `answer_04` varchar(2000) NOT NULL,
   `optionSelected` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
