@@ -1,6 +1,5 @@
-<?php
-require('../../repository/repositories.php');
-
+<?php include('../shared/header.php'); ?>
+<?php 
 $testId = filter_input(INPUT_GET, 'testId');
 $id = filter_input(INPUT_GET, 'id');
 
@@ -22,8 +21,6 @@ if($_POST)
 }
 else { $question = $questionRep->getById($id); }
 ?>
-
-<?php include('../shared/header.php'); ?>
 <form method="post">
     <input type="hidden" name="testId" value="<?php echo $testId ?>" >
     <input type="hidden" name="id" value="<?php echo $question['id'] ?>" >
@@ -61,6 +58,9 @@ else { $question = $questionRep->getById($id); }
 
 <script>
     var question = <?php echo json_encode($question); ?>;
+</script>
+<script>
+    setTitle('<?php echo ($id) ? 'Edit Question' : 'Add Question' ?>'); 
 </script>
 
 <?php include('../shared/footer.php'); ?>

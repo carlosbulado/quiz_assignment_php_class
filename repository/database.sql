@@ -43,8 +43,7 @@ CREATE TABLE IF NOT EXISTS `tests_done` (
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL,
   `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `gpa` float NOT NULL
+  `last_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `categories`
@@ -83,23 +82,12 @@ ALTER TABLE `tests_done`
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `tests_done` CHANGE `date` `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
+ALTER TABLE `tests_done` ADD `userId` INT NOT NULL AFTER `categoryId`;
 
+ALTER TABLE `questions_done` ADD `isCorrect` INT NOT NULL AFTER `optionSelected`;
 
-/*
-INSERT INTO `questios` (`id`, `name`, `testId`, `rightAnswer`, `answer_01`, `answer_02`, `answer_03`, `answer_04`) VALUES
-(1, `Question`, 3, `2`, `First`, `Second`, `Third!`, `Forth`);
+ALTER TABLE `user` ADD `isAdmin` INT NOT NULL AFTER `last_name`, ADD `username` VARCHAR(255) NOT NULL AFTER `isAdmin`, ADD `password` VARCHAR(255) NOT NULL AFTER `username`;
 
-
-INSERT INTO `tests` (`id`, `name`, `categoryId`) VALUES
-(1, `HTML 5.1`, 0),
-(2, `CSS 3`, 0),
-(3, `Javascript`, 0);
-
-
-INSERT INTO `user` (`id`, `first_name`, `last_name`, `gpa`) VALUES
-(1, `Cool`, `Name`, 3),
-(2, `Nice`, `Last`, 2),
-(3, `New`, `Student`, 1),
-(4, `Last`, `First`, 2.5);
-*/
+ALTER TABLE `user` ADD UNIQUE( `username`);

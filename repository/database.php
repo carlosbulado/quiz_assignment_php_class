@@ -6,7 +6,7 @@ class Database
     var $results;
     var $statement;
  
-    function connect()
+    function __construct()
     {
         $servername = "localhost";
         $username = "college";
@@ -15,6 +15,11 @@ class Database
 
         $this->$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         if ($this->$conn->connect_error) die("Connection failed: " . $conn->connect_error);
+    }
+
+    function connect()
+    {
+        
     }
 
     function prepare($sql) { $this->$statement = $this->$conn->prepare($sql); }

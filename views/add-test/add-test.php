@@ -1,7 +1,5 @@
+<?php include('../shared/header.php'); ?>
 <?php 
-require('../../repository/repositories.php');
-require('../../domain/domain.php');
-
 $id = filter_input(INPUT_GET, 'id');
 $test = new Test();
 $testRep = new TestRepository();
@@ -39,7 +37,6 @@ else
     }
 }
 ?>
-<?php include('../shared/header.php'); ?>
 <script src="add-test.js"></script>
 <main>
     <a href="../search-test/search-test.php">All Test</a>
@@ -92,4 +89,8 @@ else
 <script>
     var question = <?php echo json_encode($test); ?>;
 </script>
+<script>
+    setTitle('<?php echo ($id) ? 'Edit Test' : 'Add Test' ?>'); 
+</script>
+
 <?php include('../shared/footer.php'); ?>
