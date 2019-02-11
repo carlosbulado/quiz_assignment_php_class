@@ -2,6 +2,8 @@
 <?php
 $testRep = new TestRepository();
 $tests = $testRep->getAll();
+$categoriesRep = new CategoryRepository();
+$categories = $categoriesRep->getAll();
 
 if ($_POST)
 {
@@ -16,6 +18,13 @@ if ($_POST)
             break;
         }
     }
+
+    $categoryId = filter_input(INPUT_POST, 'category');
+
+    if($categoryId)
+    {
+        $tests = $testRep->getAllByCategoryId($categoryId);
+    }
 }
 
 ?>
@@ -23,21 +32,35 @@ if ($_POST)
     <ul id="categories"></ul>
 </aside>
 <main>
-    <form method="post">
-        <table>
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-            <tbody id="search-test-table">
-                <?php foreach($tests as $test) { ?>
-                    <tr>
-                        <td><?php echo $test['name']; ?></td>
-                        <td><?php echo '<button type="submit" name="action" value="' . $test['id'] . '"><a>Take Test</a></button>'; ?></td>
-                    </tr>
+    <form method="post" id="form-attend-test">
+        <aside>
+            <span>Categories</span>
+            <ul>
+                <li><button type="submit">All</button></li>
+                <?php foreach($categories as $category) { ?>
+                    <li><button type="submit" name="category" value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></button></li>
                 <?php } ?>
-            </tbody>
-        </table>
+            </ul>
+        </aside>
+        <section>
+            <span>Tests</span>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th></th>
+                </tr>
+                <tbody id="search-test-table">
+                    <?php foreach($tests as $test) { ?>
+                        <tr>
+                            <td><?php echo $test['name']; ?></td>
+                            <td><?php echo $test['category_name']; ?></td>
+                            <td><?php echo '<button type="submit" name="action" value="' . $test['id'] . '"><a>Take Test</a></button>'; ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </section>
     </form>
 </main>
 

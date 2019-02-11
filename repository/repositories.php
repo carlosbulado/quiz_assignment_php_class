@@ -12,6 +12,17 @@ function getAll($tableName)
     return $regs;
 }
 
+function getAllCustomSql($sql)
+{
+    $db = new Database();
+    $db->connect();
+    $db->prepare($sql);
+    $db->execute();
+    $regs = $db->$result;
+    $db->close();
+    return $regs;
+}
+
 function getById($tableName, $id)
 {
     $db = new Database();
@@ -40,7 +51,7 @@ function removeById($tableName, $id)
 
 class TestRepository
 {
-    function getAll() { return getAll('tests'); }
+    function getAll() { return getAllCustomSql('SELECT t.*, c.name category_name FROM tests t JOIN categories c ON t.categoryId = c.id;'); }
 
     function getById($id)
     {
@@ -141,6 +152,18 @@ class TestRepository
         }
 
         return $reg;
+    }
+
+    function getAllByCategoryId($categoryId)
+    {
+        $db = new Database();
+        $db->connect();
+        $db->prepare('SELECT t.*, c.name category_name FROM tests t JOIN categories c ON t.categoryId = c.id WHERE categoryId = :category');
+        $db->bindParam(':category', $categoryId);
+        $db->execute();
+        $regs = $db->$result;
+        $db->close();
+        return $regs;
     }
 }
 
@@ -285,5 +308,62 @@ class UserRepository
     }
 
     function remove($id) { removeById('user', $id); }
+}
+
+class CategoryRepository
+{
+    function getAll() { return getAll('categories'); }
+
+    function getById($id)
+    {
+        $regs = getById('categories', $id);
+
+        if($regs) return $regs;
+        else
+        {
+            $reg['id'] = 0;
+            $reg['name'] = '';
+        }
+
+        return $reg;
+    }
+
+    function save($id, $name)
+    {
+        $db = new Database();
+        $db->connect();
+
+        $sqlInsert = "INSERT INTO categories (name) VALUES (:name)";
+        $sqlUpdate = "UPDATE categories SET name = :name WHERE id = :id";
+
+        if($id)
+        {
+            $db->prepare($sqlUpdate);
+            $db->bindParam(':id', $id);
+        }
+        else
+        {
+            $db->prepare($sqlInsert);
+        }
+
+        $db->bindParam(':name', $name);
+        $db->execute();
+        if($id)
+        {
+            $last_id = $id;
+        }
+        else
+        {
+            $dbLastId = new Database();
+            $stmtLastId = $dbLastId->$conn->query("SELECT id FROM categories ORDER BY id DESC");
+            $last_id = $stmtLastId->fetchColumn();
+            $dbLastId->close();
+        }
+        $db->close();
+
+        return $last_id;
+    }
+
+    function remove($id) { removeById('categories', $id); }
 }
 ?>
