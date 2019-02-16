@@ -128,6 +128,66 @@ class TestRepository
 
     function remove($id) { removeById('tests', $id); }
 
+    function getAllTestDone()
+    {
+        $regs = getAllCustomSql('SELECT t.*, c.name category_name, CONCAT(u.first_name, \' \', u.last_name) UserName FROM tests_done t JOIN categories c ON t.categoryId = c.id JOIN user u ON t.userId = u.id;');
+
+        if($regs)
+        {
+            foreach($regs as $reg)
+            {
+                $dbQuestions = new Database();
+                $dbQuestions->connect();
+                $dbQuestions->prepare('SELECT * FROM questions_done WHERE testId = :testId');
+                $dbQuestions->bindParam(':testId', $reg['id']);
+                $dbQuestions->execute();
+                $reg['questions'] = $dbQuestions->$result;
+                $dbQuestions->close();
+            }
+
+            return $regs;
+        }
+        else
+        {
+            $reg['id'] = 0;
+            $reg['name'] = '';
+            $reg['categoryId'] = 0;
+            $reg['questions'] = [];
+        }
+
+        return $reg;
+    }
+
+    function getAllTestDoneByUser($id)
+    {
+        $regs = getAllCustomSql('SELECT t.*, c.name category_name, CONCAT(u.first_name, \' \', u.last_name) UserName FROM tests_done t JOIN categories c ON t.categoryId = c.id JOIN user u ON t.userId = u.id WHERE t.userId = ' . $id . ';');
+
+        if($regs)
+        {
+            foreach($regs as $reg)
+            {
+                $dbQuestions = new Database();
+                $dbQuestions->connect();
+                $dbQuestions->prepare('SELECT * FROM questions_done WHERE testId = :testId');
+                $dbQuestions->bindParam(':testId', $reg['id']);
+                $dbQuestions->execute();
+                $reg['questions'] = $dbQuestions->$result;
+                $dbQuestions->close();
+            }
+
+            return $regs;
+        }
+        else
+        {
+            $reg['id'] = 0;
+            $reg['name'] = '';
+            $reg['categoryId'] = 0;
+            $reg['questions'] = [];
+        }
+
+        return $reg;
+    }
+
     function getTestDoneById($id)
     {
         $regs = getById('tests_done', $id);
@@ -308,6 +368,20 @@ class UserRepository
     }
 
     function remove($id) { removeById('user', $id); }
+
+    function login($username, $password)
+    {
+        $db = new Database();
+        $reg = [];
+        $db->connect();
+        $db->prepare('SELECT * FROM user WHERE username = :username AND password = :password');
+        $db->bindParam(':username', $username);
+        $db->bindParam(':password', $password);
+        $db->execute();
+        $reg = $db->$result[0];
+        $db->close();
+        return $reg;
+    }
 }
 
 class CategoryRepository

@@ -29,41 +29,49 @@ if ($_POST)
 }
 ?>
 <main>
-    <a href="../attend-test/attend-test.php">All Test</a>
+    <button onclick="loation.href = '../attend-test/attend-test.php'">Quit Test</button>
+    <br>
+    <br>
     <form method="post">
         <div>
-            <div>
+            <div class="div-take-test">
                 <label>Test:</label>
                 <span><?php echo $test['name'] ?></span>
             </div>
+            <br>
+            <br>
+            <br>
             <input type="hidden" id="allQuestions" name="allQuestions" >
             <input type="hidden" id="allQuestionsIds" name="allQuestionsIds" >
             <input type="hidden" id="allAnswers" name="allAnswers" >
-            <div>
-                <label><span id="questionNumber"></span>. Question:</label>
+            <div class="div-question-answers">
+                <div>
+                    <label><span id="questionNumber"></span>. Question:</label>
+                    <br>
+                    <p><span id="questionNow"></span></p>
+                    <input type="hidden" id="questionIdNow" value="-1">
+                </div>
+                <div class="options">
+                    A. <input type="radio" name="answerQuestion" class="question_radio" id="r1" value="1"><span id="question_name_01"></span>
+                </div>
                 <br>
-                <p><span id="questionNow"></span></p>
-                <input type="hidden" id="questionIdNow" value="-1">
-            </div>
-            <div>
-                A. <input type="radio" name="answerQuestion" class="question_radio" value="1"><span id="question_name_01"></span>
-            </div>
-            <br>
-            <div>
-                B. <input type="radio" name="answerQuestion" class="question_radio" value="2"><span id="question_name_02"></span>
-            </div>
-            <br>
-            <div>
-                C. <input type="radio" name="answerQuestion" class="question_radio" value="3"><span id="question_name_03"></span>
-            </div>
-            <br>
-            <div>
-                D. <input type="radio" name="answerQuestion" class="question_radio" value="4"><span id="question_name_04"></span>
-            </div>
-            <br>
-            <br>
-            <div>
-                <button type="button" onclick="loadQuestion()">Next</button>
+                <div class="options">
+                    B. <input type="radio" name="answerQuestion" class="question_radio" id="r2" value="2"><span id="question_name_02"></span>
+                </div>
+                <br>
+                <div class="options">
+                    C. <input type="radio" name="answerQuestion" class="question_radio" id="r3" value="3"><span id="question_name_03"></span>
+                </div>
+                <br>
+                <div class="options">
+                    D. <input type="radio" name="answerQuestion" class="question_radio" id="r4" value="4"><span id="question_name_04"></span>
+                </div>
+                <br>
+                <br>
+                <div>
+                    <button class="next-btn" id="prev-question" type="button" onclick="loadPreviousQuestion()">Previous Question</button>
+                    <button class="next-btn" type="button" onclick="loadQuestion()">Next Question</button>
+                </div>
             </div>
         </div>
     </form>

@@ -28,9 +28,6 @@ if ($_POST)
 }
 
 ?>
-<aside>
-    <ul id="categories"></ul>
-</aside>
 <main>
     <form method="post" id="form-attend-test">
         <aside>

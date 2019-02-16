@@ -34,26 +34,28 @@ else
 }
 ?>
 <main>
-    <form method=post>
+    <form id="main" method=post>
         <input type="hidden" name="id" value="<?php echo $user['id'] ?>" />
-
-        <div>
+        <div class="form-input">
             <label for="name">First Name:</label>
             <input name="first_name" id="first_name" type="text" placeholder="First Name" value="<?php echo $user['first_name'] ?>" />
         </div>
-        <div>
+<br>
+        <div class="form-input">
             <label for="name">Last Name:</label>
             <input name="last_name" id="last_name" type="text" placeholder="Last Name" value="<?php echo $user['last_name'] ?>" />
         </div>
-        <div>
+<br>
+        <div class="form-input">
             <label for="name">Username:</label>
             <input name="username" id="username" type="text" placeholder="Username" value="<?php echo $user['username'] ?>" />
         </div>
-        <div>
+<br>
+        <div class="form-input">
             <label for="name">Password:</label>
-            <input name="password" id="password" type="password" value="<?php echo $user['password'] ?>" />
+            <input style="border: 1px solid #ccc; height: 19px;" name="password" id="password" type="password" value="<?php echo $user['password'] ?>" />
         </div>
-
+<br>
         <button type="submit" name="action" value="save"><?php echo ($id) ? 'Save' : 'Register' ?></button>
         <?php if($id) { ?>
             <button type="reset">Reset</button>

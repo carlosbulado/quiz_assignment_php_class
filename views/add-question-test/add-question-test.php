@@ -21,34 +21,37 @@ if($_POST)
 }
 else { $question = $questionRep->getById($id); }
 ?>
-<form method="post">
+<form id="main" method="post">
     <input type="hidden" name="testId" value="<?php echo $testId ?>" >
     <input type="hidden" name="id" value="<?php echo $question['id'] ?>" >
-    <a href="../add-test/add-test.php?id=<?php echo $testId ?>">Back</a>
+    <button onclick="location.href = '../add-test/add-test.php?id=<?php echo $testId ?>'">Back to the test</button>
+    <br>
+    <br>
     <div>
-        <div>
+        <div class="form-input">
             <label>Question:</label>
             <input type="text" name="question" value="<?php echo $question['name'] ?>" />
         </div>
-        <div>
-            <label>First answer</label>
+        <br>
+        <br>
+        <div class="form-input">
+            <label>First answer</label><div style="float: left;"><input style="float: left; width: 10px;" type="radio" name="rightAnswer" value="0" <?php if($question['rightAnswer'] == 0) { echo ' checked'; } ?> /> <span> Is right answer? </span></div>
             <input type="text" name="question_answer_01" value="<?php echo $question['answer_01'] ?>" />
-            <input type="radio" name="rightAnswer" value="0" <?php if($question['rightAnswer'] == 0) { echo ' checked'; } ?> /> Is right answer?
         </div>
-        <div>
-            <label>Second answer</label>
+        <br>
+        <div class="form-input">
+            <label>Second answer</label><div style="float: left;"><input style="float: left; width: 10px;" type="radio" name="rightAnswer" value="1" <?php if($question['rightAnswer'] == 1) { echo ' checked'; } ?> /> <span> Is right answer? </span></div>
             <input type="text" name="question_answer_02" value="<?php echo $question['answer_02'] ?>" />
-            <input type="radio" name="rightAnswer" value="1" <?php if($question['rightAnswer'] == 1) { echo ' checked'; } ?> /> Is right answer?
         </div>
-        <div>
-            <label>Third answer</label>
+        <br>
+        <div class="form-input">
+            <label>Third answer</label><div style="float: left;"><input style="float: left; width: 10px;" type="radio" name="rightAnswer" value="2" <?php if($question['rightAnswer'] == 2) { echo ' checked'; } ?> /> <span> Is right answer? </span></div>
             <input type="text" name="question_answer_03" value="<?php echo $question['answer_03'] ?>" />
-            <input type="radio" name="rightAnswer" value="2" <?php if($question['rightAnswer'] == 2) { echo ' checked'; } ?> /> Is right answer?
         </div>
-        <div>
-            <label>Forth answer</label>
+        <br>
+        <div class="form-input">
+            <label>Forth answer</label><div style="float: left;"><input style="float: left; width: 10px;" type="radio" name="rightAnswer" value="3" <?php if($question['rightAnswer'] == 3) { echo ' checked'; } ?> /> <span> Is right answer? </span></div>
             <input type="text" name="question_answer_04" value="<?php echo $question['answer_04'] ?>" />
-            <input type="radio" name="rightAnswer" value="3" <?php if($question['rightAnswer'] == 3) { echo ' checked'; } ?> /> Is right answer?
         </div>
     </div>
 

@@ -72,7 +72,7 @@ $total_corrects = 0;
             <?php echo $total_corrects . ' / ' . count($testDone['questions']) ?>
         </div>
         <div>
-            <?php echo 'You ' . ($total_corrects >= count($testDone['questions']) ? 'Pass! Congratulations!' : 'Fail!') ?>
+            <?php echo 'You ' . ($total_corrects >= count($testDone['questions'] / 2) ? 'Pass! Congratulations!' : 'Fail!') ?>
         </div>
         <div>
             <label></label>

@@ -2,14 +2,20 @@
 require('../../repository/repositories.php');
 require('../../domain/domain.php');
 
-$userId = $_SESSION["userId"] ?? 1;
-$isAdmin = $_SESSION["isAdmin"] ?? 1;
+session_start();
+
+$userId = $_SESSION["userId"];
+$isAdmin = $_SESSION["isAdmin"];
+$uri = $_SERVER['REQUEST_URI'];
+$isSignUpPage = strpos($uri, 'add-user.php') !== false;
+
+if(!$userId && !$isSignUpPage) header('Location: ../../index.php');
 
 $logout = filter_input(INPUT_POST, 'logout');
 if($logout)
 {
     session_destroy();
-    header('Location: ../../index.html');
+    header('Location: ../../index.php');
 }
 
 ?>
@@ -29,19 +35,30 @@ if($logout)
     </head>
     <body>
         <header>
-            <?php if($isAdmin) { ?>
-                <nav class="topnav">
-                    <a class="active" href="#home">X-Force</a>
-                    <a href="../search-test/search-test.php"><span>List of Tests</span></a>
-                    <a href="../add-user/add-user.php?id=<?php echo $userId ?>"><span>Profile</span></a>
-                    <form id="logoutForm" method="post"><a onclick="$('#logoutForm').submit();"><span>Logout</span></a><input type="hidden" name="logout" value="1"></form>
-                </nav>
-            <?php } else { ?>
-                <nav class="topnav">
-                    <a class="active" href="#home">X-Force</a>
-                    <a href="../attend-test/attend-test.php"><span>Attend Test</span></a>
-                    <a href="../add-user/add-user.php?id=<?php echo $userId ?>"><span>Profile</span></a>
-                    <form id="logoutForm" method="post"><a onclick="$('#logoutForm').submit();"><span>Logout</span></a><input type="hidden" name="logout" value="1"></form>
-                </nav>
-            <?php } ?>
+            <form id="logoutForm" method="post">
+                <?php if($userId) { ?>
+                    <?php if($isAdmin) { ?>
+                        <nav class="topnav">
+                            <a class="active" href="../home/home.php">X-Force</a>
+                            <a onclick="$('#logoutForm').submit();"><span>Logout</span></a><input type="hidden" name="logout" value="1">
+                            <a href="../add-user/add-user.php?id=<?php echo $userId ?>"><span>Profile</span></a>
+                            <a href="../search-category/search-category.php"><span>List of Categories</span></a>
+                            <a href="../search-test/search-test.php"><span>List of Tests</span></a>
+                            <a href="../report-tests/report-tests.php"><span>Report of Tests</span></a>
+                        </nav>
+                    <?php } else { ?>
+                        <nav class="topnav">
+                            <a class="active" href="../home/home.php">X-Force</a>
+                            <a onclick="$('#logoutForm').submit();"><span>Logout</span></a><input type="hidden" name="logout" value="1">
+                            <a href="../add-user/add-user.php?id=<?php echo $userId ?>"><span>Profile</span></a>
+                            <a href="../attend-test/attend-test.php"><span>Attend Test</span></a>
+                            <a href="../report-tests/report-tests-student.php"><span>Report of my Tests</span></a>
+                        </nav>
+                    <?php } ?>
+                <?php } else { ?>
+                    <nav class="topnav">
+                        <a class="active" href="../home/home.php">X-Force</a>
+                    </nav>
+                <?php } ?>
+            </form>
         </header>

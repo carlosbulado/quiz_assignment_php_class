@@ -19,18 +19,38 @@ function loadQuestion(nextQuestion)
         }
         else if(previousQuestion >= 0 && previousQuestion < allQuestionsInThisTest.length)
         {
+            $('#prev-question').show();
             var newQuestion = previousQuestion + 1;
             $('#questionIdNow').val(newQuestion);
             var question = allQuestionsInThisTest[newQuestion];
+            var selected = allAnswersInThisTest[newQuestion];
             $('#questionNumber').text(newQuestion + 1);
             $('#questionNow').text(question['name']);
             $('#question_name_01').text(question['answer_01']);
             $('#question_name_02').text(question['answer_02']);
             $('#question_name_03').text(question['answer_03']);
             $('#question_name_04').text(question['answer_04']);
+            if(selected) $('#r' + selected)[0].checked = true;
         }
     }
     else alert('Select at least one option before going for the next question!');
+}
+
+function loadPreviousQuestion()
+{
+    var previousQuestion = parseInt($('#questionIdNow').val());
+    var newQuestion = previousQuestion - 1;
+    var selected = allAnswersInThisTest[newQuestion];
+    $('#questionIdNow').val(newQuestion);
+    var question = allQuestionsInThisTest[newQuestion];
+    $('#questionNumber').text(newQuestion + 1);
+    $('#questionNow').text(question['name']);
+    $('#question_name_01').text(question['answer_01']);
+    $('#question_name_02').text(question['answer_02']);
+    $('#question_name_03').text(question['answer_03']);
+    $('#question_name_04').text(question['answer_04']);
+    $('#r' + selected)[0].checked = true;
+    if(newQuestion == 0) $('#prev-question').hide();
 }
 
 function validateOptionSelected()
@@ -48,6 +68,7 @@ $(document).ready(function(){
     $('#question_name_02').text(question['answer_02']);
     $('#question_name_03').text(question['answer_03']);
     $('#question_name_04').text(question['answer_04']);
+    $('#prev-question').hide();
 });
 
 setTitle('Take Test');

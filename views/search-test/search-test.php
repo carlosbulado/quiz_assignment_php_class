@@ -30,11 +30,7 @@ if ($_POST)
 
 ?>
 <script src="search-test.js"></script>
-<aside>
-    <ul id="categories"></ul>
-</aside>
 <main>
-    <a href="../add-test/add-test.php">Add Test</a>
     <form method="post" id="form-attend-test">
         <aside>
             <span>Categories</span>
@@ -46,7 +42,10 @@ if ($_POST)
             </ul>
         </aside>
         <section>
-            <span>Tests</span>
+            <br>
+            <button type="button" onclick="location.href = '../add-test/add-test.php'">Add Test</button>
+            <br>
+            <br>
             <table>
                 <tr>
                     <th>Name</th>
@@ -59,8 +58,8 @@ if ($_POST)
                         <tr>
                             <td><?php echo $test['name']; ?></td>
                             <td><?php echo $test['category_name']; ?></td>
-                            <td><?php echo '<a href="../add-test/add-test.php?id=' . $test['id'] . '">Edit</a>'; ?></td>
-                            <td><?php echo '<button type="submit" name="action" value="' . $test['id'] . '"><a>Remove</a></button>'; ?></td>
+                            <td><?php echo '<button type="button" onclick="location.href = \'../add-test/add-test.php?id=' . $test['id'] . '\'">Edit</button>'; ?></td>
+                            <td><?php echo '<button class="remove" type="submit" name="action" value="' . $test['id'] . '"><a>Remove</a></button>'; ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>
